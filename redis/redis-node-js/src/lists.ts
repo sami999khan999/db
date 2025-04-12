@@ -10,7 +10,7 @@ export const listCommands = async () => {
   const rpop = await redis.rpop("messages"); // Output: "World"
 
   // Add more items to demonstrate other commands
-  await redis.rpush("messages", "One", "Two", "Three", "Four", "Five"); // List becomes: ["One", "Two", "Three", "Four", "Five"]
+  await redis.rpush("messages", "One", "Two", "Three", "Four", "Five"); // Output: ["One", "Two", "Three", "Four", "Five"]
 
   // Get all items in the list
   const lrange = await redis.lrange("messages", 0, -1); // Output: ["One", "Two", "Three", "Four", "Five"]

@@ -2,6 +2,7 @@ import { Redis } from "ioredis";
 import { stringCommands } from "./string";
 import { listCommands } from "./lists";
 import { hashesCommands } from "./hases";
+import { setsCommands } from "./sets";
 
 // Create a new Redis client instance
 // Connects to Redis running on localhost at port 6379
@@ -33,3 +34,5 @@ stringCommands();
 listCommands();
 
 hashesCommands();
+
+setsCommands();
