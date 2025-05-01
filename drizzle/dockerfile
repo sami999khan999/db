@@ -1,0 +1,17 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install all dependencies including dev ones
+COPY package*.json ./
+
+RUN npm install --include=dev
+
+# Copy everything else
+COPY . .
+
+EXPOSE 8000
+
+# Start with nodemon and ts-node
+CMD ["npm", "run", "dev"]
+
