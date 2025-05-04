@@ -1,8 +1,10 @@
 import express from "express";
-import { newUser } from "../controllers/user";
+import { userInsert, userQuery } from "../controllers/user";
 
 const app = express.Router();
 
-app.post("/create", newUser);
+app.post("/insert", userInsert);
+
+app.get("/query", userQuery);
 
 export default app;
