@@ -29,13 +29,21 @@ export const UserTable = pgTable(
   }
 );
 
-export const UserPreferencesTable = pgTable("user_preferences", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  email_updates: boolean().notNull().default(false),
-  user_id: uuid("user_id")
-    .references(() => UserTable.id)
-    .notNull(),
-});
+export const UserPreferencesTable = pgTable(
+  "user_preferences",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email_updates: boolean().notNull().default(false),
+    user_id: uuid("user_id")
+      .references(() => UserTable.id)
+      .notNull(),
+  },
+  (table) => {
+    return {
+      unique_user_id: uniqueIndex("unique_user_id").on(table.user_id),
+    };
+  }
+);
 
 export const PostsTable = pgTable("posts", {
   id: uuid("id").primaryKey().defaultRandom(),
