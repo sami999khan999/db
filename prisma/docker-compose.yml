@@ -1,0 +1,35 @@
+services:
+  web:
+    container_name: next_js_prisma_web
+    build: ./
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env.local
+    environment:
+      POSTGRES_HOST: db
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+        - path: ./
+          target: /app
+          action: sync
+    depends_on:
+      - db
+
+  db:
+    container_name: next_js_prisma_db
+    image: postgres:latest
+    env_file:
+      - .env.local
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:
+    name: next_js_prisma_db_volume

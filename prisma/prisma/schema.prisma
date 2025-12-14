@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id    String  @id @default(uuid())
+  email String  @unique
+  name  String?
+
+  writtedPosts   Posts[] @relation("WrittedPosts")
+  favoritedPosts Posts[] @relation("FavoritedPosts")
+
+  userPreferences UserPreferences?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserPreferences {
+  id                   String  @id @default(uuid())
+  newsLetter           Boolean @default(false)
+  emailUpdates         Boolean @default(false)
+  theme                String  @default("light")
+  language             String  @default("en")
+  notificationsEnabled Boolean @default(true)
+  timezone             String  @default("UTC")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Posts {
+  id          String @id @default(uuid())
+  title       String @db.Char(100)
+  description String @db.Text
+
+  author   User   @relation("WrittedPosts", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  favoritedBy User[] @relation("FavoritedPosts")
+
+  category  Category[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  color       String?  @default("#6366f1")
+  isActive    Boolean  @default(true)
+  posts       Posts[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
